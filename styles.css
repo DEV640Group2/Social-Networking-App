@@ -109,3 +109,17 @@ h2 {
 .login-link a:hover {
     text-decoration: underline;
 }
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* space between checkbox and label */
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
