@@ -12,6 +12,7 @@
       <h2 style="text-align: center;">🏢 Member Directory</h2>
       <p class="subtitle" style="text-align: center;">Browse and connect with your colleagues.</p>
 
+      <!-- Search bar with button -->
       <div class="input-group" style="display: flex; gap: 10px; align-items: center;">
         <input
           type="text"
@@ -24,13 +25,15 @@
           Search
         </button>
       </div>
-      
 
+      <!-- Member cards -->
       <div id="memberDirectory" style="margin-top: 20px;"></div>
 
-      <p class="login-link" style="margin-top: 20px;">
-        <a href="playground.html">← Back to Playground</a>
-      </p>
+      <!-- Navigation links -->
+      <div class="login-link" style="margin-top: 20px;">
+        <a href="playground.html" id="backToPlayground">← Back to Playground</a>
+        <a href="#" onclick="clearSearch()" id="backToFullDirectory" style="display: none;">← Back to Full Directory</a>
+      </div>
     </div>
   </div>
 
@@ -83,6 +86,18 @@
 
     function renderDirectory(filter = "") {
       const container = document.getElementById("memberDirectory");
+      const backPlayground = document.getElementById("backToPlayground");
+      const backDirectory = document.getElementById("backToFullDirectory");
+
+      // Toggle visibility based on search
+      if (filter.trim()) {
+        backPlayground.style.display = "none";
+        backDirectory.style.display = "inline";
+      } else {
+        backPlayground.style.display = "inline";
+        backDirectory.style.display = "none";
+      }
+
       container.innerHTML = "";
 
       const filtered = mockMembers.filter(member =>
@@ -119,18 +134,19 @@
       });
     }
 
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      renderDirectory(); // reset to main list
+    }
 
     document.addEventListener("DOMContentLoaded", () => {
-        renderDirectory();
+      renderDirectory();
 
-        document.getElementById("searchButton").addEventListener("click", () => {
-            const query = document.getElementById("searchInput").value;
-            renderDirectory(query);
-        });
+      document.getElementById("searchButton").addEventListener("click", () => {
+        const query = document.getElementById("searchInput").value;
+        renderDirectory(query);
+      });
     });
-
-
-    
   </script>
 </body>
 </html>
