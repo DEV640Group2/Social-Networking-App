@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Friends | Social Network</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="add-friends.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="signup-box">
+            <h2>Add Friends</h2>
+            <p class="subtitle">Search and connect with your colleagues.</p>
+
+            <!-- Search input -->
+            <div class="input-group" style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" id="searchInput" placeholder="Search users (mock)" />
+                <button class="btn" onclick="searchUsers()">Search</button>
+            </div>
+
+            <!-- Search results -->
+            <div id="searchResults"></div>
+
+            <hr style="margin: 25px 0;" />
+
+            <!-- Friend list -->
+            <h3>Your Friends</h3>
+            <ul id="friendsList"></ul>
+
+            <!-- Navigation -->
+            <p class="login-link" style="margin-top: 25px;">
+                <a href="messaging.html">Go to Messaging</a>
+            </p>
+
+            <p class="login-link">
+                <a href="login.html">Back to Log In</a>
+            </p>
+              
+        </div>
+    </div>
+</body>
+</html>
