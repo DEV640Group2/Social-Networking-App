@@ -15,7 +15,12 @@ function searchUsers() {
 
     results.forEach(user => {
         const div = document.createElement("div");
-        div.innerHTML = `${user} <button onclick="addFriend('${user}')">Add Friend</button>`;
+        div.innerHTML = `
+            <div class="search-result">
+                <span>${user}</span>
+                <button class="add-btn" onclick="addFriend('${user}')">➕ Add Friend</button>
+            </div>
+        `;
         resultsDiv.appendChild(div);
     });
 }

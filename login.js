@@ -10,22 +10,36 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     emailError.innerText = "";
     passwordError.innerText = "";
 
-    if (!email.endsWith("@company.com")) {
+    if (!email.endsWith("@company.com") && email !== "mockuser@company.com") {
         emailError.innerText = "Please use your company email.";
         return;
     }
 
-    const response = await fetch("login.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, rememberMe })
-    });
+    // ✅ Mock account
+    if (email === "mockuser@company.com" && password === "password123") {
+        localStorage.setItem("currentUser", email);
+        window.location.href = "playground.html";
+        return;
+    }
 
-    const result = await response.json();
+    try {
+        const response = await fetch("login.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password, rememberMe })
+        });
 
-    if (result.success) {
-        window.location.href = "dashboard.html"; // protected page
-    } else {
-        passwordError.innerText = result.message || "Invalid email or password.";
+        const result = await response.json();
+
+        if (result.success) {
+            localStorage.setItem("currentUser", email);
+            window.location.href = "playground.html";
+        } else {
+            passwordError.innerText = result.message || "Invalid email or password.";
+        }
+    } catch (error) {
+        passwordError.innerText = "Network error. Please try again.";
     }
 });
+
+
