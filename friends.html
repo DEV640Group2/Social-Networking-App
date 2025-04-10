@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Friends | Social Network</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .friend-list li {
+      background: #f5f7fa;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-weight: 500;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .friend-list li:hover {
+      background: #eaefff;
+    }
+
+    .chat-box {
+      margin-top: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      display: none;
+    }
+
+    .chat-box h4 {
+      margin-bottom: 10px;
+    }
+
+    .message {
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      max-width: 75%;
+      line-height: 1.4;
+      font-size: 0.95rem;
+    }
+
+    .message.user {
+      background-color: #6e8efb;
+      color: white;
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .message.friend {
+      background-color: #f1f1f1;
+      color: #333;
+      align-self: flex-start;
+    }
+
+    .message-area {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .message-input {
+      display: flex;
+      gap: 10px;
+    }
+
+    .message-input input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .message-input button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      background-color: #6e8efb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="signup-box">
+      <h2>👥 Your Friends</h2>
+      <ul id="friendList" class="friend-list"></ul>
+
+      <div class="chat-box" id="chatBox">
+        <h4 id="chatWith">Chatting with: </h4>
+        <div class="message-area" id="chatMessages"></div>
+
+        <div class="message-input">
+          <input type="text" id="chatInput" placeholder="Type a message..." />
+          <button onclick="mockSendMessage()">Send</button>
+        </div>
+      </div>
+
+      <p class="login-link" style="margin-top: 20px;">
+        <a href="playground.html">← Back to Playground</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const friends = JSON.parse(localStorage.getItem("friends")) || [];
+    const friendList = document.getElementById("friendList");
+    const chatBox = document.getElementById("chatBox");
+    const chatWith = document.getElementById("chatWith");
+    const chatMessages = document.getElementById("chatMessages");
+    const chatInput = document.getElementById("chatInput");
+
+    const mockChats = {
+      "alice@company.com": [
+        { sender: "friend", text: "Hi Alice!" },
+        { sender: "user", text: "Hey there! How’s the project?" },
+        { sender: "friend", text: "Pretty good! Almost done." }
+      ],
+      "bob@company.com": [
+        { sender: "friend", text: "Lunch?" },
+        { sender: "user", text: "Sure, let's go at noon." }
+      ],
+      "carol@company.com": [
+        { sender: "friend", text: "Reminder: HR training tomorrow!" }
+      ]
+    };
+
+    let currentFriend = null;
+
+    function renderFriends() {
+      friendList.innerHTML = "";
+
+      if (friends.length === 0) {
+        friendList.innerHTML = "<p>You have no friends yet.</p>";
+        return;
+      }
+
+      friends.forEach(friend => {
+        const li = document.createElement("li");
+        li.textContent = friend;
+        li.addEventListener("click", () => {
+          currentFriend = friend;
+          chatWith.textContent = `Chatting with: ${friend}`;
+          renderChatHistory(friend);
+          chatBox.style.display = "block";
+        });
+        friendList.appendChild(li);
+      });
+    }
+
+    function renderChatHistory(email) {
+      chatMessages.innerHTML = "";
+      const messages = mockChats[email] || [];
+
+      messages.forEach(msg => {
+        const div = document.createElement("div");
+        div.className = `message ${msg.sender}`;
+        div.textContent = msg.text;
+        chatMessages.appendChild(div);
+      });
+    }
+
+    function mockSendMessage() {
+      const text = chatInput.value.trim();
+      if (!text || !currentFriend) return;
+
+      const message = { sender: "user", text };
+      if (!mockChats[currentFriend]) {
+        mockChats[currentFriend] = [];
+      }
+      mockChats[currentFriend].push(message);
+      renderChatHistory(currentFriend);
+      chatInput.value = "";
+    }
+
+    document.addEventListener("DOMContentLoaded", renderFriends);
+  </script>
+</body>
+</html>
